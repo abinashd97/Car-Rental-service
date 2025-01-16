@@ -1,0 +1,107 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class CarRentProject {
+
+        public static void main(String[] args) {
+            Scanner scanner = new Scanner(System.in);
+            List<Car> availableCars = new ArrayList<>();
+            List<Car> rentedCars = new ArrayList<>();
+
+            // Initialize with sample cars
+            availableCars.add(new Car("TATA", "Curve", "Sedan", 1500.0));
+            availableCars.add(new Car("Honda", "Civic", "Sedan", 1450.0));
+            availableCars.add(new Car("Ford", "Fortuner", "XUV", 1750.0));
+
+            boolean continueRentingProcess = true;
+
+            while (continueRentingProcess) {
+                System.out.println("\nCar Rental System");
+                System.out.println("1. View Available Cars");
+                System.out.println("2. Rent a Car");
+                System.out.println("3. Return a Car");
+                System.out.println("4. View Rented Cars");
+                System.out.println("5. Exit");
+                System.out.print("Enter your choice: ");
+                int choice = scanner.nextInt();
+
+                switch (choice) {
+                    case 1:
+                        System.out.println("\nAvailable Cars:");
+                        displayCars(availableCars);
+                        break;
+                    case 2:
+                        System.out.println("\nAvailable Cars:");
+                        displayCars(availableCars);
+                        System.out.print("Enter the index of the car to rent: ");
+                        int carIndex = scanner.nextInt() - 1;
+
+                        if (isValidCarIndex(carIndex, availableCars)) {
+                            Car rentedCar = availableCars.remove(carIndex);
+                            rentedCars.add(rentedCar);
+                            System.out.println("Car rented successfully!");
+                        } else {
+                            System.out.println("Invalid car index.");
+                        }
+                        break;
+                    case 3:
+                        System.out.println("\nRented Cars:");
+                        displayCars(rentedCars);
+                        System.out.print("Enter the index of the car to return: ");
+                        carIndex = scanner.nextInt() - 1;
+
+                        if (isValidCarIndex(carIndex, rentedCars)) {
+                            Car returnedCar = rentedCars.remove(carIndex);
+                            availableCars.add(returnedCar);
+                            System.out.println("Car returned successfully!");
+                        } else {
+                            System.out.println("Invalid car index.");
+                        }
+                        break;
+                    case 4:
+                        System.out.println("\nRented Cars:");
+                        displayCars(rentedCars);
+                        break;
+                    case 5:
+                        System.out.println("Exiting...");
+                        continueRentingProcess = false;
+                        break;
+                    default:
+                        System.out.println("Invalid choice.");
+                }
+            }
+
+            scanner.close();
+        }
+
+        private static void displayCars(List<Car> cars) {
+            for (int i = 0; i < cars.size(); i++) {
+                System.out.println((i + 1) + ". " + cars.get(i));
+            }
+        }
+
+        private static boolean isValidCarIndex(int index, List<Car> cars) {
+            return index >= 0 && index < cars.size();
+        }
+
+        static class Car {
+            String make;
+            String model;
+            String type;
+            double dailyRate;
+
+            public Car(String make, String model, String type, double dailyRate) {
+                this.make = make;
+                this.model = model;
+                this.type = type;
+                this.dailyRate = dailyRate;
+            }
+
+            @Override
+            public String toString() {
+                return make + " " + model + " (" + type + ") - Rs" + dailyRate + "/day";
+            }
+        }
+
+}
